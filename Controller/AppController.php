@@ -39,20 +39,17 @@ class AppController extends Controller {
 	
 	//STA SE VERIFICA PREFIXO
 	protected function _isPrefix($prefix) {
-		return isset($this->params['prefix']) &&
-		$this->params['prefix'] === $prefix;
+		return isset($this->params['prefix']) && $this->params['prefix'] === $prefix;
 	}
-	//END SE VERIFICA PREFIXO
-	
 	
 	//STA ACAO DEPOIS DO VERIFICAR O PREFIXO
 	public function beforeFilter() {
-		
+	
 		//STA SE ESTA NO PAINEL
 		if ($this->_isPrefix('painel')){
 			$this->layout = 'backend'; 
-			return parent::beforeFilter();
-		
+		// O RETURN ESTAVA AQUI
+
 		$this->Auth->authenticate = array('Form' => array(
 			'userModel' => 'Usuario',
 				'fields' => array(
@@ -71,7 +68,13 @@ class AppController extends Controller {
 			$this->Auth->allow();
 		}
 		//END SE ACESSO FOR DIFERENTE DE PAINEL PODE ACESSAR
+
+			// O PROBLEMA ESTAVA AQUI O RETURN ESTAVA LÁ EMCIMA ENTÃO ELE NÃO CONTINUAVA A EXECUÇÃO DO SCRIPT
+			return parent::beforeFilter(); 
 	}
 	//END ACAO DEPOIS DO VERIFICAR O PREFIXO
+
+	
+	//END SE VERIFICA PREFIXO
 	
 }
